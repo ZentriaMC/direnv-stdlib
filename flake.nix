@@ -22,10 +22,15 @@
         };
       in
       rec {
-        devShell = pkgs.mkShell {
+        devShells.default = pkgs.mkShell {
           buildInputs = [
+            pkgs.coreutils
+            pkgs.findutils
             pkgs.shellcheck
+            pkgs.lowdown
           ];
         };
+
+        devShells.ci = devShells.default;
       });
 }
