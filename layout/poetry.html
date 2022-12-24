@@ -1,0 +1,15 @@
+<h1 id="layout_poetry">layout_poetry</h1>
+
+<p>This is an opinionated implementation for supporting <a href="https://python-poetry.org/">Poetry</a> in direnv, based on <a href="https://github.com/direnv/direnv/pull/995">direnv#995</a></p>
+
+<p>direnv currently <a href="https://github.com/direnv/direnv/issues/592">does not support</a> <a href="https://python-poetry.org/">Poetry</a>.<br/>
+See also tracking issue <a href="https://github.com/ZentriaMC/direnv-stdlib/issues/1">direnv-stdlib#1</a></p>
+
+<h2 id="usage">Usage</h2>
+
+<pre><code class="language-shell">layout poetry
+</code></pre>
+
+<h2 id="notes">Notes</h2>
+
+<p>To use Poetry only to manage development environment dependencies of given project (e.g Ansible playbook), remove <code>packages</code> section from <code>pyproject.toml</code></p>

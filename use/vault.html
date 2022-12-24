@@ -1,0 +1,14 @@
+<h1 id="use_vault">use_vault</h1>
+
+<p>Sets up <code>VAULT_TOKEN</code> in current environment and ensures it&#8217;s valid. Opinionated for usage with OIDC method.</p>
+
+<h2 id="usage">Usage</h2>
+
+<pre><code class="language-shell">use vault
+</code></pre>
+
+<h2 id="notes">Notes</h2>
+
+<p>HashiCorp Vault binary operates using <code>~&#47;.vault-token</code>, so this function might be inconvenient to use with different Vault instances&#47;namespaces.</p>
+
+<p>If <code>CI</code> environment variable is set, then token validity check will be skipped (assumes token is always valid in CI).</p>
