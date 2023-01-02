@@ -13,3 +13,33 @@ See also tracking issue <a href="https://github.com/ZentriaMC/direnv-stdlib/issu
 <h2 id="notes">Notes</h2>
 
 <p>To use Poetry only to manage development environment dependencies of given project (e.g Ansible playbook), remove <code>packages</code> section from <code>pyproject.toml</code></p>
+
+<h1 id="code"><a href="https://zentriamc.github.io/direnv-stdlib/layout/poetry.sh">Code</a></h1>
+
+<pre><code class="language-bash"># shellcheck shell=bash
+# vim: ft=bash
+
+layout_poetry () {
+    if ! has poetry; then
+        log_error "Poetry is not installed"
+        return 1
+    fi
+
+    PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
+    if [[ ! -f "$PYPROJECT_TOML" ]]; then
+        log_error "No pyproject.toml found"
+        return 1
+    fi
+
+    VIRTUAL_ENV="$(poetry env info --path 2&#62;&#47;dev&#47;null || true)"
+    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+        log_status "Executing \`poetry install\` to set up initial environment"
+        poetry install --no-root
+        VIRTUAL_ENV="$(poetry env info --path)"
+    fi
+
+    PATH_add "$VIRTUAL_ENV&#47;bin"
+    export POETRY_ACTIVE=1
+    export VIRTUAL_ENV
+}
+</code></pre>

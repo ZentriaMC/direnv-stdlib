@@ -12,3 +12,33 @@
 <p>HashiCorp Vault binary operates using <code>~&#47;.vault-token</code>, so this function might be inconvenient to use with different Vault instances&#47;namespaces.</p>
 
 <p>If <code>CI</code> environment variable is set, then token validity check will be skipped (assumes token is always valid in CI).</p>
+
+<h1 id="code"><a href="https://zentriamc.github.io/direnv-stdlib/use/vault.sh">Code</a></h1>
+
+<pre><code class="language-bash"># shellcheck shell=bash
+# vim: ft=bash
+
+use_vault () {
+    # In CI environment, require VAULT_TOKEN to be set externally
+    if test -n "${CI}"; then
+        strict_env env_vars_required VAULT_ADDR VAULT_TOKEN
+        return 0
+    fi
+
+    strict_env env_vars_required VAULT_ADDR
+
+    if ! has vault; then
+        log_error "HashiCorp Vault is not installed"
+        return 1
+    fi
+
+    #VAULT_TOKEN="$(vault read -field=id &#47;auth&#47;token&#47;lookup-self)"
+    #if [ "${?}" -gt "0" ]; then
+    if ! VAULT_TOKEN="$(vault read -field=id &#47;auth&#47;token&#47;lookup-self)"; then
+        log_warn "Seems like &#39;vault token lookup&#39; failed. Try logging in into Vault again with &#39;vault login -method=oidc&#39;"
+        return 1
+    fi
+
+    export VAULT_TOKEN
+}
+</code></pre>
