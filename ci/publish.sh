@@ -44,7 +44,6 @@ EOF
 pushd "${root}/src" > /dev/null
 find . -type f -name "*.sh" -printf '%P\n' | while read -r script; do
     docfile="${script}.md"
-    name="$(basename -- "${script}")"
     srihash="$(sri "${script}")"
 
     docname=""
