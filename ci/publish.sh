@@ -53,7 +53,15 @@ find . -type f -name "*.sh" -printf '%P\n' | while read -r script; do
         output="${root}/dist/${docname}"
         mkdir -p "$(dirname -- "${output}")"
 
-        lowdown -t html -o "${output}" "${docfile}"
+        lowdown -t html -o "${output}" <(cat "${docfile}" - <<EOF
+
+# [Code](${URL_PREFIX}/${script})
+
+\`\`\`bash
+$(< "${script}")
+\`\`\`
+EOF
+)
 
         echo "${script} => ${srihash} (${docfile})"
     else
