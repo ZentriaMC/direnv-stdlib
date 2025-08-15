@@ -1,0 +1,36 @@
+<h1 id="layout_uv">layout_uv</h1>
+
+<p>This is an opinionated implementation for supporting <a href="https://docs.astral.sh/uv/">uv</a> in direnv, similar to <code>layout poetry</code></p>
+
+<h2 id="usage">Usage</h2>
+
+<pre><code class="language-shell">layout uv
+</code></pre>
+
+<h1 id="code"><a href="https://zentriamc.github.io/direnv-stdlib/layout/uv.sh">Code</a></h1>
+
+<pre><code class="language-bash"># shellcheck shell=bash
+# vim: ft=bash
+
+layout_uv () {
+    if ! has uv; then
+        log_error "uv is not installed"
+        return 1
+    fi
+
+    PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
+    if [[ ! -f "$PYPROJECT_TOML" ]]; then
+        log_error "No pyproject.toml found"
+        return 1
+    fi
+
+    VIRTUAL_ENV="$(realpath .)&#47;.venv"
+    if [[ ! -d $VIRTUAL_ENV ]]; then
+        log_status "Executing \`uv sync\` to set up initial environment"
+        uv sync
+    fi
+
+    PATH_add "$VIRTUAL_ENV&#47;bin"
+    export VIRTUAL_ENV
+}
+</code></pre>
